@@ -3,25 +3,13 @@ import { defineStackbitConfig, SiteMapEntry } from "@stackbit/types";
 
 export default defineStackbitConfig({
   // ...
-  contentSources: [
-    new GitContentSource({
-      rootPath: __dirname,
-      contentDirs: ["content"],
-      models: [
-        {
-          name: "Page",
-          type: "page",
-          // Static URL path derived from the "slug" field
-          urlPath: "/{slug}",
-          filePath: "content/pages/{slug}.json",
-          fields: [{ name: "title", type: "string", required: true }]
-        },
-        // ...
-      ],
-    })
-  ],
+  modelExtensions: [
+    // Static URL paths derived from the model's "slug" field
+    { name: "Page", type: "page", urlPath: "/{slug}" },
+    { name: "Post", type: "page", urlPath: "/blog/{slug}" }
+  ]
   siteMap: ({ documents, models }) => {
-    // 1. Filter all page models
+    // 1. Filter all page models which were defined in modelExtensions
     const pageModels = models.filter((m) => m.type === "page")
 
     return documents
