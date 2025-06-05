@@ -6,7 +6,12 @@ export default defineConfig({
   plugins: [tailwindcss(), solidPlugin()],
   server: {
     port: 3000,
-    allowedHosts: ['devserver-preview--acrex.netlify.app']
+    host: true, // Accept requests from external hosts like Netlify preview
+    strictPort: true,
+    hmr: {
+      host: 'devserver-preview--acrex.netlify.app',
+      protocol: 'wss',
+    }
   },
   build: {
     target: 'esnext',
